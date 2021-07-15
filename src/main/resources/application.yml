@@ -1,0 +1,30 @@
+
+server:
+  port: 8111
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/scai_yd?serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
+#    url: jdbc:mysql://120.55.43.25:3306/scai_yd?serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    initialSize: 1
+    minIdle: 1
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+
+    validationQuery: SELECT 1
+    filters: stat,slf4j,wall,config
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+wx:
+  open:
+    app_id: wxb2f52c14bc3022c1
+    app_secret: 90f033956f3504dc1dd8ba7b65a3b247
+    redirect_url: http://guli.shop/api/ucenter/wx/callback

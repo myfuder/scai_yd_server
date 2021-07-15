@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.scai_yd_server.dao.PicListDao">
+
+    <select id="queryPicListByType" resultType="com.example.scai_yd_server.model.PicInfoModel">
+        SELECT id,thumbnail,title,picCount,videoCount,rateCount,price from pictrues where type like CONCAT('%',#{typeId},'%')
+    </select>
+    <delete id="deleteTypeById">
+        DELETE FROM pic_types WHERE id=#{id};
+    </delete>
+    <select id="queryPicTypeList" resultType="com.example.scai_yd_server.model.PicTypeModel">
+        SELECT id ,name,thumbnail FROM pic_types;
+    </select>
+    <select id="queryPicDetailById" resultType="com.example.scai_yd_server.model.PicInfoModel">
+        SELECT * from pictrues where id = #{id} ;
+    </select>
+    <select id="queryPicListByTypeName" resultType="com.example.scai_yd_server.model.PicInfoModel">
+        select a.id,a.thumbnail,a.title,a.wpno,a.picCount,a.videoCount,a.rateCount,a.price from pictrues a,(select id from pic_types where name = #{typeName}) b where a.type like CONCAT('%',b.id,'%') ORDER BY create_time desc
+    </select>
+    <select id="queryPics" resultType="com.example.scai_yd_server.model.PicInfoModel">
+        SELECT id,thumbnail,title,wpno,picCount,videoCount,rateCount,price,memory from pictrues ORDER BY create_time desc
+    </select>
+    <delete id="deletePicById">
+        DELETE FROM pictrues WHERE id=#{id};
+    </delete>
+    <select id="searchPicListByKey" resultType="com.example.scai_yd_server.model.PicInfoModel">
+        SELECT id,thumbnail,title,wpno,picCount,videoCount,number,rateCount,price,memory from pictrues where title
+                                                                                              like CONCAT('%',#{key},'%')
+                                                                                       or detailcontent like CONCAT('%',#{key},'%')
+                                                                                       or remarks like CONCAT('%',#{key},'%')
+                                                                                       or wpno like CONCAT('%',#{key},'%') or number like CONCAT('%',#{key},'%')
+                                                                                        ORDER BY create_time desc
+    </select>
+
+    <insert id="saveInfo">
+        insert into pictrues(thumbnail,title,wpno,picCount,videoCount,rateCount,price,type,number,memory,detailcontent,remarks)
+        values (#{thumbnail},#{title},#{wpno},#{picCount},#{videoCount},#{rateCount},#{price},#{type},#{number},#{memory},#{detailcontent},#{remarks})
+    </insert>
+    <insert id="saveType">
+        insert into pic_types(name,thumbnail)
+        values (#{name},#{thumbnail})
+    </insert>
+    <update id="updataPicType">
+        UPDATE pic_types SET name=#{name},thumbnail=#{thumbnail} WHERE id=#{id};
+    </update>
+
+    <update id="updatePicInfoById">
+        UPDATE pictrues SET thumbnail=#{thumbnail},title=#{title},wpno=#{wpno},picCount=#{picCount},videoCount=#{videoCount},rateCount=#{rateCount},
+                            price=#{price},type=#{type},number=#{number},memory=#{memory},detailcontent=#{detailcontent},remarks=#{remarks}
+        WHERE id=#{id};
+    </update>
+</mapper>
